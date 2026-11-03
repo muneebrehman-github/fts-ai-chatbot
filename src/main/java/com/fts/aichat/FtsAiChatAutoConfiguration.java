@@ -17,8 +17,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.util.StringUtils;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @AutoConfiguration
 @ConditionalOnWebApplication
@@ -99,25 +97,6 @@ public class FtsAiChatAutoConfiguration {
             FtsAiChatService ftsAiChatService,
             ChatUserContextFactory chatUserContextFactory) {
         return new FtsAiChatController(ftsAiChatService, chatUserContextFactory);
-    }
-
-    @Bean
-    @ConditionalOnProperty(prefix = "fts.ai.chat", name = "widget-enabled", havingValue = "true", matchIfMissing = true)
-    WebMvcConfigurer ftsAiChatWidgetResources() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addResourceHandlers(ResourceHandlerRegistry registry) {
-                // Packaged under META-INF/resources — Spring Boot serves them at classpath root as well.
-                registry.addResourceHandler("/js/portal-chat-widget.js")
-                        .addResourceLocations(
-                                "classpath:/META-INF/resources/static/js/",
-                                "classpath:/static/js/");
-                registry.addResourceHandler("/css/portal-chat-widget.css")
-                        .addResourceLocations(
-                                "classpath:/META-INF/resources/static/css/",
-                                "classpath:/static/css/");
-            }
-        };
     }
 
     private static ChatClient buildClient(

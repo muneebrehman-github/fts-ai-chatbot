@@ -6,7 +6,7 @@
 
     <groupId>com.fts</groupId>
     <artifactId>fts-ai-chatbot-spring-boot-starter</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <packaging>jar</packaging>
     <name>FTS AI Chatbot Spring Boot Starter</name>
     <description>Reusable Groq→Gemini AI chat API + floating widget for FTS Spring Boot products</description>
