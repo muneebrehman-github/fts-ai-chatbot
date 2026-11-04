@@ -7,7 +7,7 @@ This guide explains how to embed the reusable chat **backend + floating widget**
 | Item | Value |
 |------|--------|
 | Artifact | `com.fts:fts-ai-chatbot-spring-boot-starter` |
-| Current version | `0.1.1` |
+| Current version | `0.1.2` |
 | Packages URL | `https://maven.pkg.github.com/muneebrehman-github/fts-ai-chatbot` |
 | Chat API | `POST /api/v1/chat` |
 | Widget assets | `/js/portal-chat-widget.js`, `/css/portal-chat-widget.css` |
@@ -64,7 +64,7 @@ In the product `pom.xml`:
 <dependency>
   <groupId>com.fts</groupId>
   <artifactId>fts-ai-chatbot-spring-boot-starter</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 
@@ -115,11 +115,19 @@ In the shared layout (authenticated pages only):
 </body>
 ```
 
-Optional JS override:
+Optional JS override (endpoint + product branding):
 
 ```html
 <script>
-  window.FTS_AI_CHAT = { endpoint: '/api/v1/chat' };
+  window.FTS_AI_CHAT = {
+    endpoint: '/api/v1/chat',
+    storageKey: 'product-ai-chat-conversation-id',
+    title: 'AI Assistant',
+    subtitle: 'Product help · tools-aware',
+    welcome: 'Hi — ask how to use this portal.',
+    placeholder: 'Ask a question…',
+    launcherLabel: 'AI assistant'
+  };
 </script>
 ```
 
@@ -216,7 +224,7 @@ public class AiChatSupportConfig {
 | Step | Required |
 |------|----------|
 | GitHub Packages auth or local `mvn install` | Yes |
-| Starter dependency `0.1.1` | Yes |
+| Starter dependency `0.1.2` | Yes |
 | `GROQ_API_KEY` | Yes |
 | CSRF meta tags + widget CSS/JS in layout | Yes |
 | Authenticated session for `/api/v1/chat` | Yes |

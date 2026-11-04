@@ -9,6 +9,12 @@
   var cfg = window.FTS_AI_CHAT || {};
   var ENDPOINT = cfg.endpoint || '/api/v1/chat';
   var STORAGE_KEY = cfg.storageKey || 'fts-ai-chat-conversation-id';
+  var TITLE = cfg.title || 'AI Assistant';
+  var SUBTITLE = cfg.subtitle || 'Control Center help · tools-aware';
+  var WELCOME = cfg.welcome
+    || 'Hi — I can look up portal how-tos and (with permission) absent users. Try “How do ports work?” or “Who was absent today?”.';
+  var PLACEHOLDER = cfg.placeholder || 'Ask about ports, RBAC, absent users…';
+  var LAUNCHER_LABEL = cfg.launcherLabel || 'AI assistant';
 
   function csrfHeaders() {
     var tokenMeta = document.querySelector('meta[name="_csrf"]');
@@ -45,6 +51,15 @@
     } catch (e) { /* ignore */ }
   }
 
+  function escapeHtml(value) {
+    return String(value == null ? '' : value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
   function el(tag, className, text) {
     var node = document.createElement(tag);
     if (className) {
@@ -64,7 +79,7 @@
     var root = el('div');
     root.id = 'portal-chat-root';
     root.innerHTML =
-      '<button type="button" class="pcw-launcher" aria-label="Open AI assistant" title="AI assistant">' +
+      '<button type="button" class="pcw-launcher" aria-label="Open ' + escapeHtml(LAUNCHER_LABEL) + '" title="' + escapeHtml(LAUNCHER_LABEL) + '">' +
       '  <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">' +
       '    <path d="M5 12c0-4.2 3.4-7.5 7.5-7.5S20 7.8 20 12c0 1.6-.5 3.1-1.4 4.4L20 20l-4-1.3A7.5 7.5 0 0 1 5 12Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>' +
       '    <circle cx="9.2" cy="12" r="1" fill="currentColor"/>' +
@@ -72,14 +87,14 @@
       '    <circle cx="15.8" cy="12" r="1" fill="currentColor"/>' +
       '  </svg>' +
       '</button>' +
-      '<section class="pcw-panel" role="dialog" aria-label="AI assistant chat" aria-hidden="true">' +
+      '<section class="pcw-panel" role="dialog" aria-label="' + escapeHtml(TITLE) + ' chat" aria-hidden="true">' +
       '  <header class="pcw-header">' +
-      '    <div><h2>AI Assistant</h2><p>Control Center help · tools-aware</p></div>' +
+      '    <div><h2>' + escapeHtml(TITLE) + '</h2><p>' + escapeHtml(SUBTITLE) + '</p></div>' +
       '    <button type="button" class="pcw-close" aria-label="Close chat">✕</button>' +
       '  </header>' +
       '  <div class="pcw-messages" aria-live="polite"></div>' +
       '  <form class="pcw-composer">' +
-      '    <textarea name="message" rows="2" placeholder="Ask about ports, RBAC, absent users…" required></textarea>' +
+      '    <textarea name="message" rows="2" placeholder="' + escapeHtml(PLACEHOLDER) + '" required></textarea>' +
       '    <button type="submit" class="pcw-send">Send</button>' +
       '  </form>' +
       '</section>';
@@ -134,10 +149,7 @@
     }
 
     if (!messages.childElementCount) {
-      appendMessage(
-        'assistant',
-        'Hi — I can look up portal how-tos and (with permission) absent users. Try “How do ports work?” or “Who was absent today?”.'
-      );
+      appendMessage('assistant', WELCOME);
     }
 
     launcher.addEventListener('click', function () {
