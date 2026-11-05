@@ -23,7 +23,8 @@ jobs:
           server-username: GITHUB_ACTOR
           server-password: GITHUB_TOKEN
 
-      - name: Build and publish
+      - name: Build and publish libraries
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: mvn -B -DskipTests deploy
+        # Publishes core + spring-boot-starter (chat-api sets maven.deploy.skip=true)
+        run: mvn -B -DskipTests deploy -pl core,starter -am

@@ -1,9 +1,10 @@
 package com.fts.aichat;
 
+import com.fts.aichat.core.LlmProviderSettings;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @ConfigurationProperties(prefix = "fts.ai.chat")
-public class FtsAiChatProperties {
+public class FtsAiChatProperties implements LlmProviderSettings {
 
     /**
      * Master switch for the chat API auto-configuration.
@@ -34,6 +35,7 @@ public class FtsAiChatProperties {
 
     private int maxMemoryMessages = 40;
 
+    @Override
     public boolean isEnabled() {
         return enabled;
     }
@@ -50,6 +52,7 @@ public class FtsAiChatProperties {
         this.widgetEnabled = widgetEnabled;
     }
 
+    @Override
     public String getSystemPrompt() {
         return systemPrompt;
     }
@@ -58,6 +61,7 @@ public class FtsAiChatProperties {
         this.systemPrompt = systemPrompt;
     }
 
+    @Override
     public String getGroqApiKey() {
         return groqApiKey;
     }
@@ -66,6 +70,7 @@ public class FtsAiChatProperties {
         this.groqApiKey = groqApiKey;
     }
 
+    @Override
     public String getGroqBaseUrl() {
         return groqBaseUrl;
     }
@@ -74,6 +79,7 @@ public class FtsAiChatProperties {
         this.groqBaseUrl = groqBaseUrl;
     }
 
+    @Override
     public String getGroqModel() {
         return groqModel;
     }
@@ -82,6 +88,7 @@ public class FtsAiChatProperties {
         this.groqModel = groqModel;
     }
 
+    @Override
     public double getTemperature() {
         return temperature;
     }
@@ -90,6 +97,7 @@ public class FtsAiChatProperties {
         this.temperature = temperature;
     }
 
+    @Override
     public String getGeminiApiKey() {
         return geminiApiKey;
     }
@@ -98,6 +106,7 @@ public class FtsAiChatProperties {
         this.geminiApiKey = geminiApiKey;
     }
 
+    @Override
     public String getGeminiBaseUrl() {
         return geminiBaseUrl;
     }
@@ -106,6 +115,7 @@ public class FtsAiChatProperties {
         this.geminiBaseUrl = geminiBaseUrl;
     }
 
+    @Override
     public String getGeminiModel() {
         return geminiModel;
     }
@@ -114,19 +124,12 @@ public class FtsAiChatProperties {
         this.geminiModel = geminiModel;
     }
 
+    @Override
     public int getMaxMemoryMessages() {
         return maxMemoryMessages;
     }
 
     public void setMaxMemoryMessages(int maxMemoryMessages) {
         this.maxMemoryMessages = maxMemoryMessages;
-    }
-
-    public boolean hasGroqKey() {
-        return groqApiKey != null && !groqApiKey.isBlank();
-    }
-
-    public boolean hasGeminiKey() {
-        return geminiApiKey != null && !geminiApiKey.isBlank();
     }
 }

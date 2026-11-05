@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FTS AI Chat — Embed Demo</title>
+  <link rel="stylesheet" href="/widget.css" />
+  <style>
+    :root {
+      --bg: #0b1520;
+      --text: #e8f2f7;
+      --muted: #8aa3b5;
+      --accent: #2fe0c4;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(ellipse at 20% 0%, rgba(47, 224, 196, 0.12), transparent 45%),
+        radial-gradient(ellipse at 90% 20%, rgba(80, 140, 200, 0.14), transparent 40%),
+        linear-gradient(165deg, #0b1520, #071018 55%, #0a1620);
+    }
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 64px 24px 120px;
+    }
+    h1 {
+      margin: 0 0 12px;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      letter-spacing: -0.03em;
+    }
+    p {
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 54ch;
+    }
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.86em;
+      color: var(--accent);
+      background: rgba(47, 224, 196, 0.08);
+      padding: 0.12em 0.4em;
+      border-radius: 6px;
+    }
+    pre {
+      margin-top: 28px;
+      padding: 16px 18px;
+      overflow-x: auto;
+      border-radius: 14px;
+      border: 1px solid rgba(150, 200, 220, 0.18);
+      background: rgba(7, 17, 26, 0.65);
+      color: #d7e8f0;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>FTS AI Chat embed demo</h1>
+    <p>
+      This page loads the public widget against this host’s
+      <code>/api/v1/public/chat</code> endpoint using site key
+      <code>demo-site</code>. Open the launcher in the bottom-right corner.
+    </p>
+    <pre>&lt;link rel="stylesheet" href="https://CHAT_HOST/widget.css" /&gt;
+&lt;script
+  src="https://CHAT_HOST/widget.js"
+  data-site-key="demo-site"
+  data-api-base="https://CHAT_HOST"
+  defer
+&gt;&lt;/script&gt;</pre>
+  </main>
+
+  <script
+    src="/widget.js"
+    data-site-key="demo-site"
+    data-api-base=""
+    defer
+  ></script>
+</body>
+</html>

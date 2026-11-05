@@ -1,0 +1,48 @@
+server:
+  port: ${PORT:8088}
+
+spring:
+  application:
+    name: fts-ai-chat-api
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+fts:
+  ai:
+    chat:
+      enabled: true
+      groq-api-key: ${GROQ_API_KEY:}
+      groq-model: ${GROQ_CHAT_MODEL:openai/gpt-oss-120b}
+      gemini-api-key: ${GEMINI_API_KEY:}
+      gemini-model: ${GEMINI_CHAT_MODEL:gemini-2.5-flash}
+      system-prompt: |
+        You are a helpful website assistant.
+        Be concise, friendly, and accurate.
+        If you do not know something, say so clearly.
+    public:
+      sites:
+        demo:
+          site-key: demo-site
+          allowed-origins: []
+          title: FTS Demo Assistant
+          subtitle: Public embed - Groq to Gemini
+          welcome: Hi - ask me anything. This is the public embed demo.
+          placeholder: Type a message...
+          launcher-label: AI assistant
+          system-prompt: |
+            You are the FTS demo website assistant.
+            Be concise and friendly. Keep answers short.
+          rate-limit-per-minute: 120
+          rate-limit-per-ip-per-minute: 40
+
+logging:
+  level:
+    com.fts.aichat: INFO
