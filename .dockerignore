@@ -1,0 +1,15 @@
+**/target/
+**/.git/
+**/.github/
+**/.idea/
+**/.vscode/
+**/*.iml
+**/hs_err_*.log
+**/.env
+**/.env.*
+**/node_modules/
+docs/
+*.md
+!README.md
+deploy-key
+deploy-key.pub

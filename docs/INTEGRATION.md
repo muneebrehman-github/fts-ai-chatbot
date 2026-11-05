@@ -7,7 +7,7 @@ This guide explains how to embed the reusable chat **backend + floating widget**
 | Item | Value |
 |------|--------|
 | Artifact | `com.fts:fts-ai-chatbot-spring-boot-starter` |
-| Current version | `0.1.2` |
+| Current version | `0.2.0` |
 | Packages URL | `https://maven.pkg.github.com/muneebrehman-github/fts-ai-chatbot` |
 | Chat API | `POST /api/v1/chat` |
 | Widget assets | `/js/portal-chat-widget.js`, `/css/portal-chat-widget.css` |
@@ -15,6 +15,9 @@ This guide explains how to embed the reusable chat **backend + floating widget**
 | Fallback | Gemini (`gemini-2.5-flash`) on HTTP **429** |
 
 Requirements: **Spring Boot 3.4+**, Spring Security (session + CSRF), Spring Web.
+
+> Need a widget on a non-Spring site? Use the hosted **chat-api** embed instead —
+> see [EMBED.md](EMBED.md). This starter remains the path for authenticated Java portals.
 
 ---
 
@@ -64,7 +67,7 @@ In the product `pom.xml`:
 <dependency>
   <groupId>com.fts</groupId>
   <artifactId>fts-ai-chatbot-spring-boot-starter</artifactId>
-  <version>0.1.2</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
@@ -224,7 +227,7 @@ public class AiChatSupportConfig {
 | Step | Required |
 |------|----------|
 | GitHub Packages auth or local `mvn install` | Yes |
-| Starter dependency `0.1.2` | Yes |
+| Starter dependency `0.2.0` | Yes |
 | `GROQ_API_KEY` | Yes |
 | CSRF meta tags + widget CSS/JS in layout | Yes |
 | Authenticated session for `/api/v1/chat` | Yes |
@@ -245,8 +248,11 @@ unless you intentionally want a single shared fleet bot with separate service au
 
 ## Publishing a new starter version
 
-1. Bump `<version>` in this repo’s `pom.xml`
+1. Bump `<version>` in the parent `pom.xml` (modules inherit it)
 2. Create a GitHub Release (or run the **Publish GitHub Package** workflow)
 3. Bump the dependency version in each consuming product
 
-See also the root [README.md](../README.md).
+The workflow publishes `fts-ai-chatbot-core` and `fts-ai-chatbot-spring-boot-starter`
+only (`chat-api` is a runnable service, not a Packages library).
+
+See also the root [README.md](../README.md) and [EMBED.md](EMBED.md).
