@@ -57,6 +57,7 @@ fts:
           placeholder: Type a message…
           launcher-label: Chat with us
           primary-color: "#2fe0c4"
+          verified-label: Verified Example data
           system-prompt: |
             You are the Example.com website assistant.
             Be concise and friendly.
@@ -71,6 +72,8 @@ fts:
 | `expires-at` | Optional ISO-8601 instant. After this time returns 403 Site key expired. Omit = never |
 | `allowed-origins` | CORS + request Origin check. Empty list = allow any origin (dev only) |
 | `system-prompt` | Per-site instructions (falls back to global `fts.ai.chat.system-prompt`) |
+| `welcome` / `placeholder` | Greeting bubble + input hint (per project) |
+| `verified-label` | Badge under assistant replies; omit to hide |
 | rate limits | Sliding 1-minute windows, in-memory (per instance) |
 
 ---
@@ -88,11 +91,14 @@ fts:
 ```
 
 Optional `data-*` overrides: `data-title`, `data-subtitle`, `data-welcome`,
-`data-placeholder`, `data-launcher-label`, `data-primary-color`, `data-storage-key`.
+`data-placeholder`, `data-launcher-label`, `data-primary-color`,
+`data-verified-label`, `data-storage-key`.
 
-Or set `window.FTS_PUBLIC_CHAT = { siteKey, apiBase, title, ... }` before the script.
+Or set `window.FTS_PUBLIC_CHAT = { siteKey, apiBase, title, welcome, placeholder, verifiedLabel, ... }` before the script.
 
-The widget fetches branding from `/api/v1/public/config` when available.
+The widget fetches branding from `/api/v1/public/config` when available
+(welcome, placeholder, verifiedLabel, colors, etc.). Assistant replies show a
+timestamp and optional verified badge ? never the LLM provider name.
 
 ---
 
@@ -119,7 +125,8 @@ The widget fetches branding from `/api/v1/public/config` when available.
 
 ### `GET /api/v1/public/config?siteKey=mkt-live-key`
 
-Returns title / subtitle / welcome / placeholder / launcherLabel / primaryColor (no secrets).
+Returns title / subtitle / welcome / placeholder / launcherLabel / primaryColor /
+verifiedLabel (no secrets).
 
 ### `GET /health`
 

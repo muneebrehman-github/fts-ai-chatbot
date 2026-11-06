@@ -129,7 +129,8 @@ Optional JS override (endpoint + product branding):
     subtitle: 'Product help · tools-aware',
     welcome: 'Hi — ask how to use this portal.',
     placeholder: 'Ask a question…',
-    launcherLabel: 'AI assistant'
+    launcherLabel: 'AI assistant',
+    verifiedLabel: 'Verified portal guidance'
   };
 </script>
 ```

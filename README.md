@@ -47,7 +47,10 @@ fts:
           allowed-origins:
             - https://www.example.com
           title: Example Assistant
+          welcome: Hi ? ask about our product.
+          placeholder: Ask about pricing, features?
           primary-color: "#2fe0c4"
+          verified-label: Verified Example data
 ```
 
 Set `enabled: false` to cut off a project immediately, or `expires-at` for a timed cut-off.

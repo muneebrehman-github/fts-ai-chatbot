@@ -154,11 +154,52 @@
   color: #ffc9c9;
 }
 
-.pcw-msg .pcw-meta {
-  display: block;
+.pcw-msg .pcw-text {
+  white-space: pre-wrap;
+}
+
+.pcw-msg .pcw-footer {
   margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.pcw-msg .pcw-footer:has(.pcw-verified) {
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--pcw-line);
+}
+
+.pcw-msg.user .pcw-footer {
+  margin-top: 4px;
+  align-items: flex-end;
+}
+
+.pcw-verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   color: var(--pcw-muted);
   font-size: 0.72rem;
+  line-height: 1.3;
+}
+
+.pcw-verified-icon {
+  display: inline-flex;
+  color: var(--pcw-accent);
+  flex-shrink: 0;
+}
+
+.pcw-time {
+  color: var(--pcw-muted);
+  font-size: 0.68rem;
+  opacity: 0.9;
+}
+
+.pcw-msg.user .pcw-time {
+  opacity: 0.75;
 }
 
 /* Rendered Markdown inside assistant bubbles */
@@ -213,7 +254,7 @@
 }
 
 .pcw-md li::marker {
-  color: var(--pcw-muted);
+  color: var(--pcw-accent);
 }
 
 .pcw-md strong {
