@@ -1,15 +1,15 @@
-# FTS AI Chatbot — Integration User Guide
+# FTS AI Chatbot � Integration User Guide
 
 Step-by-step guide to add the FTS AI chatbot to a website or a Spring Boot product.
 
 | | Public website embed | Spring Boot product |
 |--|--|--|
-| **Use when** | Marketing site, WordPress, React/Next, Lovable, plain HTML | Authenticated FTS portals (Control Center, WaterFlow, …) |
+| **Use when** | Marketing site, WordPress, React/Next, Lovable, plain HTML | Authenticated FTS portals (Control Center, WaterFlow, �) |
 | **How it works** | Hosted `chat-api` + script tag | Maven starter inside your app |
 | **Auth** | `siteKey` (+ Origin allowlist) | Logged-in session + CSRF |
 | **Detail docs** | [EMBED.md](EMBED.md) | [INTEGRATION.md](INTEGRATION.md) |
 
-**Version:** `0.2.0` · Primary model: Groq · Fallback: Gemini on HTTP **429**
+**Version:** `0.2.1` � Primary model: Groq � Fallback: Gemini on HTTP **429**
 
 ---
 
@@ -17,24 +17,24 @@ Step-by-step guide to add the FTS AI chatbot to a website or a Spring Boot produ
 
 ```
 Do you have a Spring Boot app with Spring Security sessions?
-        │
-   Yes ─┼─► Path B — Spring Boot starter (authenticated chat + tools)
-        │
-   No  ─┴─► Path A — Public embed (any website)
+        �
+   Yes -+-? Path B � Spring Boot starter (authenticated chat + tools)
+        �
+   No  ---? Path A � Public embed (any website)
 ```
 
 Most marketing / external sites use **Path A**. Internal FTS portals use **Path B**.
 
 ---
 
-## Path A — Integrate on any website
+## Path A � Integrate on any website
 
 ### A1. Prerequisites
 
 - A running **chat-api** instance (local, Docker, or VM)
 - `GROQ_API_KEY` on the **server** (never in frontend env)
 - Optional: `GEMINI_API_KEY` for 429 fallback
-- Your site’s public origin, e.g. `https://www.example.com`
+- Your site�s public origin, e.g. `https://www.example.com`
 
 ### A2. Get chat-api running
 
@@ -44,7 +44,7 @@ Most marketing / external sites use **Path A**. Internal FTS portals use **Path 
 export GROQ_API_KEY=...
 export GEMINI_API_KEY=...   # optional
 mvn -pl chat-api -am -DskipTests package
-java -jar chat-api/target/fts-ai-chat-api-0.2.0.jar
+java -jar chat-api/target/fts-ai-chat-api-0.2.1.jar
 ```
 
 Default local port: **8088**. Demo page: http://localhost:8088/embed-demo.html (`siteKey`: `demo-site`).
@@ -81,14 +81,16 @@ fts:
     public:
       sites:
         marketing:
-          site-key: mkt-live-key          # public embed token — rotate if leaked
+          site-key: mkt-live-key          # public embed token � rotate if leaked
+          enabled: true                   # set false to cut off this project immediately
+          expires-at: 2027-12-31T23:59:59Z  # optional ISO-8601; omit = never expires
           allowed-origins:
             - https://www.example.com
             - http://localhost:3000       # local frontend during development
           title: Example Assistant
           subtitle: We are here to help
-          welcome: Hi — ask about our product.
-          placeholder: Type a message…
+          welcome: Hi � ask about our product.
+          placeholder: Type a message�
           launcher-label: Chat with us
           primary-color: "#2fe0c4"
           system-prompt: |
@@ -101,6 +103,8 @@ fts:
 | Field | Required | Notes |
 |-------|----------|--------|
 | `site-key` | Yes | Widget sends this; treat like an embed token |
+| `enabled` | No | Default `true`. Set `false` to disable without deleting the entry |
+| `expires-at` | No | ISO-8601 instant (e.g. `2027-12-31T23:59:59Z`). After expiry returns 403. Omit = never |
 | `allowed-origins` | Prod: yes | Empty = allow any origin (**dev only**) |
 | Branding fields | No | Title, colors, welcome text, etc. |
 | `system-prompt` | No | Per-site instructions for the model |
@@ -174,7 +178,7 @@ Or set config before the script loads:
 
 #### WordPress
 
-Appearance → Theme File Editor (or a “Header/Footer scripts” plugin): paste the HTML snippet in the footer so it loads on every page. Ensure your WordPress origin is in `allowed-origins`.
+Appearance ? Theme File Editor (or a �Header/Footer scripts� plugin): paste the HTML snippet in the footer so it loads on every page. Ensure your WordPress origin is in `allowed-origins`.
 
 #### Optional `data-*` overrides
 
@@ -195,7 +199,7 @@ Server branding from `GET /api/v1/public/config?siteKey=...` wins when available
 1. Open your site in the browser
 2. Confirm a floating launcher (bottom-right)
 3. Send a test message
-4. In DevTools → Network, `POST .../api/v1/public/chat` should return:
+4. In DevTools ? Network, `POST .../api/v1/public/chat` should return:
 
 ```json
 {
@@ -208,7 +212,7 @@ Server branding from `GET /api/v1/public/config?siteKey=...` wins when available
 
 ---
 
-## Path B — Integrate in a Spring Boot product
+## Path B � Integrate in a Spring Boot product
 
 ### B1. Prerequisites
 
@@ -254,7 +258,7 @@ mvn -DskipTests clean install
 <dependency>
   <groupId>com.fts</groupId>
   <artifactId>fts-ai-chatbot-spring-boot-starter</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1</version>
 </dependency>
 ```
 
@@ -297,9 +301,9 @@ On authenticated layouts only:
       endpoint: '/api/v1/chat',
       storageKey: 'product-ai-chat-conversation-id',
       title: 'AI Assistant',
-      subtitle: 'Product help · tools-aware',
-      welcome: 'Hi — ask how to use this portal.',
-      placeholder: 'Ask a question…',
+      subtitle: 'Product help � tools-aware',
+      welcome: 'Hi � ask how to use this portal.',
+      placeholder: 'Ask a question�',
       launcherLabel: 'AI assistant'
     };
   </script>
@@ -313,7 +317,7 @@ Security:
 - Keep `POST /api/v1/chat` **authenticated**
 - Keep CSRF enabled (widget reads the meta tags)
 
-### B6. Optional — product tools
+### B6. Optional � product tools
 
 ```java
 import com.fts.aichat.FtsAiChatTools;
@@ -332,16 +336,16 @@ public class MyProductTools implements FtsAiChatTools {
 
 Tools run on the request thread, so `SecurityContextHolder` is available for RBAC.
 
-### B7. Optional — richer user context
+### B7. Optional � richer user context
 
-Provide a `ChatUserContextFactory` bean so the model sees your principal’s id / name / authorities. Full example: [INTEGRATION.md](INTEGRATION.md#6-richer-user-context-optional).
+Provide a `ChatUserContextFactory` bean so the model sees your principal�s id / name / authorities. Full example: [INTEGRATION.md](INTEGRATION.md#6-richer-user-context-optional).
 
 ### B8. Verify Path B
 
 1. Start the app with `GROQ_API_KEY`
 2. Sign in
-3. Open an authenticated page — floating button bottom-right
-4. Send a message — expect `POST /api/v1/chat` JSON with `reply`, `conversationId`, `provider`
+3. Open an authenticated page � floating button bottom-right
+4. Send a message � expect `POST /api/v1/chat` JSON with `reply`, `conversationId`, `provider`
 
 ---
 
@@ -376,14 +380,14 @@ Provide a `ChatUserContextFactory` bean so the model sees your principal’s id 
 ### Public website
 
 - [ ] chat-api deployed and `/health` OK
-- [ ] Site entry with `site-key` + production `allowed-origins`
+- [ ] Site entry with `site-key` + production `allowed-origins` (+ optional `enabled` / `expires-at`)
 - [ ] Snippet on the page (`widget.css` + `widget.js`)
-- [ ] Keys only on server — not in frontend env
+- [ ] Keys only on server � not in frontend env
 - [ ] Test message returns a reply
 
 ### Spring Boot product
 
-- [ ] Starter `0.2.0` on classpath (Packages or local install)
+- [ ] Starter `0.2.1` on classpath (Packages or local install)
 - [ ] `GROQ_API_KEY` set
 - [ ] CSRF meta + widget CSS/JS on authenticated layout
 - [ ] `/api/v1/chat` requires authentication
@@ -397,5 +401,5 @@ Provide a `ChatUserContextFactory` bean so the model sees your principal’s id 
 |-----|----------|
 | [EMBED.md](EMBED.md) | Public API contract & security notes |
 | [INTEGRATION.md](INTEGRATION.md) | Deep Spring Boot / tools / publishing |
-| [CICD_GITHUB_DOCKER_VM.md](CICD_GITHUB_DOCKER_VM.md) | Deploy chat-api via GitHub → Docker Hub → VM |
+| [CICD_GITHUB_DOCKER_VM.md](CICD_GITHUB_DOCKER_VM.md) | Deploy chat-api via GitHub ? Docker Hub ? VM |
 | [README.md](../README.md) | Repo overview & quick starts |

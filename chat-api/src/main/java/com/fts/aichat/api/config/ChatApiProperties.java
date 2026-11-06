@@ -1,6 +1,7 @@
 package com.fts.aichat.api.config;
 
 import com.fts.aichat.core.LlmProviderSettings;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -185,6 +186,13 @@ public class ChatApiProperties implements LlmProviderSettings {
 
     public static class SiteConfig {
         private String siteKey = "";
+        /** Soft kill switch; false rejects all public requests for this site. */
+        private boolean enabled = true;
+        /**
+         * Optional ISO-8601 instant (e.g. {@code 2027-12-31T23:59:59Z}).
+         * Null / omitted = never expires.
+         */
+        private Instant expiresAt;
         private List<String> allowedOrigins = new ArrayList<>();
         private String systemPrompt = "";
         private String title = "AI Assistant";
@@ -202,6 +210,36 @@ public class ChatApiProperties implements LlmProviderSettings {
 
         public void setSiteKey(String siteKey) {
             this.siteKey = siteKey;
+        }
+
+        public boolean isEnabled() {
+            return enabled;
+        }
+
+        public void setEnabled(boolean enabled) {
+            this.enabled = enabled;
+        }
+
+        public Instant getExpiresAt() {
+            return expiresAt;
+        }
+
+        public void setExpiresAt(Instant expiresAt) {
+            this.expiresAt = expiresAt;
+        }
+
+        /** True when the site is enabled and not past {@link #expiresAt}. */
+        public boolean isActive(Instant now) {
+            if (!enabled) {
+                return false;
+            }
+            Instant at = now != null ? now : Instant.now();
+            return expiresAt == null || !at.isAfter(expiresAt);
+        }
+
+        public boolean isExpired(Instant now) {
+            Instant at = now != null ? now : Instant.now();
+            return expiresAt != null && at.isAfter(expiresAt);
         }
 
         public List<String> getAllowedOrigins() {

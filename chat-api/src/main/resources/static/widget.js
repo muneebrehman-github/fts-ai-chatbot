@@ -62,6 +62,124 @@
       .replace(/'/g, '&#39;');
   }
 
+  /**
+   * Lightweight Markdown → HTML for assistant replies (escape-first, no HTML pass-through).
+   * Supports: headings, bold/italic, inline/code blocks, lists, hr, links, paragraphs.
+   */
+  function renderMarkdown(src) {
+    var text = escapeHtml(src).replace(/\r\n?/g, '\n');
+    var blocks = [];
+    var inlines = [];
+
+    function stash(store, html) {
+      store.push(html);
+      return '\0' + (store === blocks ? 'B' : 'I') + (store.length - 1) + '\0';
+    }
+
+    text = text.replace(/```([^\n`]*)\n?([\s\S]*?)```/g, function (_, lang, code) {
+      return stash(blocks, '<pre class="fts-cw-code"><code>' + code.replace(/^\n+|\n+$/g, '') + '</code></pre>');
+    });
+
+    text = text.replace(/`([^`\n]+)`/g, function (_, code) {
+      return stash(inlines, '<code>' + code + '</code>');
+    });
+
+    text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, function (_, label, href) {
+      return stash(inlines, '<a href="' + href + '" target="_blank" rel="noopener noreferrer">' + label + '</a>');
+    });
+
+    text = text.replace(/\*\*\*([^*\n]+)\*\*\*/g, '<strong><em>$1</em></strong>');
+    text = text.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+    // /m so ^ matches each line start (e.g. "*Path:*" after a blank line)
+    text = text.replace(/(^|[^*\n])\*([^*\n]+)\*(?!\*)/gm, '$1<em>$2</em>');
+    text = text.replace(/___([^_\n]+)___/g, '<strong><em>$1</em></strong>');
+    text = text.replace(/__([^_\n]+)__/g, '<strong>$1</strong>');
+    text = text.replace(/(^|[^_\n])_([^_\n]+)_(?!_)/gm, '$1<em>$2</em>');
+
+    var lines = text.split('\n');
+    var out = [];
+    var listType = null;
+    var para = [];
+
+    function closeList() {
+      if (listType) {
+        out.push('</' + listType + '>');
+        listType = null;
+      }
+    }
+
+    function flushPara() {
+      if (!para.length) {
+        return;
+      }
+      out.push('<p>' + para.join('<br>') + '</p>');
+      para = [];
+    }
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var trimmed = line.trim();
+
+      if (!trimmed) {
+        flushPara();
+        closeList();
+        continue;
+      }
+
+      if (/^\0B\d+\0$/.test(trimmed)) {
+        flushPara();
+        closeList();
+        out.push(trimmed);
+        continue;
+      }
+
+      var heading = trimmed.match(/^(#{1,3})\s+(.+)$/);
+      if (heading) {
+        flushPara();
+        closeList();
+        var level = heading[1].length;
+        out.push('<h' + level + '>' + heading[2] + '</h' + level + '>');
+        continue;
+      }
+
+      if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
+        flushPara();
+        closeList();
+        out.push('<hr>');
+        continue;
+      }
+
+      var ul = trimmed.match(/^[-*+]\s+(.+)$/);
+      var ol = trimmed.match(/^\d+[.)]\s+(.+)$/);
+      if (ul || ol) {
+        flushPara();
+        var type = ul ? 'ul' : 'ol';
+        if (listType !== type) {
+          closeList();
+          out.push('<' + type + '>');
+          listType = type;
+        }
+        out.push('<li>' + (ul ? ul[1] : ol[1]) + '</li>');
+        continue;
+      }
+
+      closeList();
+      para.push(trimmed);
+    }
+
+    flushPara();
+    closeList();
+
+    text = out.join('');
+    text = text.replace(/\0B(\d+)\0/g, function (_, idx) {
+      return blocks[Number(idx)] || '';
+    });
+    text = text.replace(/\0I(\d+)\0/g, function (_, idx) {
+      return inlines[Number(idx)] || '';
+    });
+    return text;
+  }
+
   function el(tag, className, text) {
     var node = document.createElement(tag);
     if (className) {
@@ -187,7 +305,14 @@
     }
 
     function appendMessage(role, text, meta) {
-      var bubble = el('div', 'fts-cw-msg ' + role, text);
+      var bubble = el('div', 'fts-cw-msg ' + role);
+      if (role === 'assistant') {
+        var body = el('div', 'fts-cw-md');
+        body.innerHTML = renderMarkdown(text);
+        bubble.appendChild(body);
+      } else {
+        bubble.textContent = text;
+      }
       if (meta) {
         bubble.appendChild(el('span', 'fts-cw-meta', meta));
       }

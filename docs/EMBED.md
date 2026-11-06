@@ -23,7 +23,7 @@ API keys (`GROQ_API_KEY`, `GEMINI_API_KEY`) stay on the server only.
 export GROQ_API_KEY=...
 export GEMINI_API_KEY=...   # optional
 mvn -pl chat-api -am -DskipTests package
-java -jar chat-api/target/fts-ai-chat-api-0.2.0.jar
+java -jar chat-api/target/fts-ai-chat-api-0.2.1.jar
 ```
 
 Or after `mvn -DskipTests install`: `mvn -f chat-api/pom.xml spring-boot:run`
@@ -46,13 +46,15 @@ fts:
       sites:
         marketing:
           site-key: mkt-live-key
+          enabled: true
+          expires-at: 2027-12-31T23:59:59Z   # optional; omit = never expires
           allowed-origins:
             - https://www.example.com
             - http://localhost:3000
           title: Example Assistant
           subtitle: We are here to help
-          welcome: Hi â€” ask about our product.
-          placeholder: Type a messageâ€¦
+          welcome: Hi — ask about our product.
+          placeholder: Type a message…
           launcher-label: Chat with us
           primary-color: "#2fe0c4"
           system-prompt: |
@@ -65,6 +67,8 @@ fts:
 | Field | Notes |
 |-------|--------|
 | `site-key` | Public id the widget sends (treat like an embed token; rotate if leaked) |
+| `enabled` | Soft kill switch (default `true`). `false` returns 403 Site is disabled |
+| `expires-at` | Optional ISO-8601 instant. After this time returns 403 Site key expired. Omit = never |
 | `allowed-origins` | CORS + request Origin check. Empty list = allow any origin (dev only) |
 | `system-prompt` | Per-site instructions (falls back to global `fts.ai.chat.system-prompt`) |
 | rate limits | Sliding 1-minute windows, in-memory (per instance) |
@@ -130,6 +134,7 @@ Returns title / subtitle / welcome / placeholder / launcherLabel / primaryColor 
 - Do **not** put Groq/Gemini keys in frontend env vars
 - Restrict `allowed-origins` in production
 - Rotate `siteKey` if it is abused
+- Disable a project with `enabled: false`, or set `expires-at` for a timed cut-off
 - Rate limits are per JVM; put a CDN/WAF in front for multi-instance fleets
 
 ---

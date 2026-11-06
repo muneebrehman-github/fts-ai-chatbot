@@ -8,6 +8,7 @@ import com.fts.aichat.api.dto.PublicWidgetConfigResponse;
 import com.fts.aichat.api.ratelimit.SlidingWindowRateLimiter;
 import com.fts.aichat.core.ChatResult;
 import com.fts.aichat.core.FallbackChatService;
+import java.time.Instant;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,13 @@ public class PublicChatService {
     private SiteConfig requireSite(String siteKey, String origin) {
         SiteConfig site = siteRegistry.find(siteKey)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid siteKey"));
+        Instant now = Instant.now();
+        if (!site.isEnabled()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Site is disabled");
+        }
+        if (site.isExpired(now)) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Site key expired");
+        }
         if (!siteRegistry.isOriginAllowed(site, origin)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Origin not allowed for this siteKey");
         }

@@ -144,6 +144,7 @@
   align-self: flex-start;
   background: var(--pcw-bot);
   border-color: var(--pcw-line);
+  white-space: normal;
 }
 
 .pcw-msg.error {
@@ -158,6 +159,108 @@
   margin-top: 6px;
   color: var(--pcw-muted);
   font-size: 0.72rem;
+}
+
+/* Rendered Markdown inside assistant bubbles */
+.pcw-md {
+  white-space: normal;
+}
+
+.pcw-md > :first-child {
+  margin-top: 0;
+}
+
+.pcw-md > :last-child {
+  margin-bottom: 0;
+}
+
+.pcw-md p {
+  margin: 0 0 0.65em;
+}
+
+.pcw-md p:last-child {
+  margin-bottom: 0;
+}
+
+.pcw-md h1,
+.pcw-md h2,
+.pcw-md h3 {
+  margin: 0.7em 0 0.35em;
+  line-height: 1.3;
+  font-weight: 650;
+  letter-spacing: -0.02em;
+  color: var(--pcw-text);
+}
+
+.pcw-md h1 { font-size: 1.12em; }
+.pcw-md h2 { font-size: 1.05em; }
+.pcw-md h3 { font-size: 1em; }
+
+.pcw-md h1:first-child,
+.pcw-md h2:first-child,
+.pcw-md h3:first-child {
+  margin-top: 0;
+}
+
+.pcw-md ul,
+.pcw-md ol {
+  margin: 0.35em 0 0.7em;
+  padding-left: 1.3em;
+}
+
+.pcw-md li {
+  margin: 0.25em 0;
+}
+
+.pcw-md li::marker {
+  color: var(--pcw-muted);
+}
+
+.pcw-md strong {
+  font-weight: 650;
+}
+
+.pcw-md em {
+  font-style: italic;
+}
+
+.pcw-md code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.86em;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.12em 0.4em;
+  border-radius: 5px;
+  word-break: break-word;
+}
+
+.pcw-md pre,
+.pcw-md .pcw-code {
+  margin: 0.5em 0;
+  padding: 10px 12px;
+  overflow-x: auto;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.28);
+  border: 1px solid var(--pcw-line);
+}
+
+.pcw-md pre code,
+.pcw-md .pcw-code code {
+  background: none;
+  padding: 0;
+  font-size: 0.82em;
+  white-space: pre;
+}
+
+.pcw-md hr {
+  border: 0;
+  border-top: 1px solid var(--pcw-line);
+  margin: 0.75em 0;
+}
+
+.pcw-md a {
+  color: var(--pcw-accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .pcw-typing {
