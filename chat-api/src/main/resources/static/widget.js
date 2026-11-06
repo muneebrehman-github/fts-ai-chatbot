@@ -9,7 +9,8 @@
  *   defer
  * ></script>
  *
- * Optional data-*: title, subtitle, welcome, placeholder, launcher-label, primary-color, storage-key
+ * Optional data-*: title, subtitle, welcome, placeholder, launcher-label,
+ *   primary-color, verified-label, storage-key
  * Optional override: window.FTS_PUBLIC_CHAT = { ... }
  */
 (function () {
@@ -47,6 +48,7 @@
   var PLACEHOLDER = cfg.placeholder || attr('data-placeholder', 'Type a message…');
   var LAUNCHER_LABEL = cfg.launcherLabel || attr('data-launcher-label', 'AI assistant');
   var PRIMARY_COLOR = cfg.primaryColor || attr('data-primary-color', '');
+  var VERIFIED_LABEL = cfg.verifiedLabel || attr('data-verified-label', '');
 
   if (!SITE_KEY) {
     console.warn('[FTS AI Chat] data-site-key is required on the widget script tag.');
@@ -224,6 +226,22 @@
     }
   }
 
+  function formatTime(date) {
+    var d = date || new Date();
+    try {
+      return new Intl.DateTimeFormat(undefined, {
+        hour: 'numeric',
+        minute: '2-digit'
+      }).format(d);
+    } catch (e) {
+      var h = d.getHours();
+      var m = d.getMinutes();
+      var ampm = h >= 12 ? 'PM' : 'AM';
+      h = h % 12 || 12;
+      return h + ':' + (m < 10 ? '0' : '') + m + ' ' + ampm;
+    }
+  }
+
   function loadRemoteConfig() {
     var url = CONFIG_URL + (CONFIG_URL.indexOf('?') >= 0 ? '&' : '?') + 'siteKey=' + encodeURIComponent(SITE_KEY);
     return fetch(url, {
@@ -253,6 +271,9 @@
       LAUNCHER_LABEL = branding.launcherLabel || LAUNCHER_LABEL;
       if (branding.primaryColor) {
         PRIMARY_COLOR = branding.primaryColor;
+      }
+      if (branding.verifiedLabel != null && branding.verifiedLabel !== '') {
+        VERIFIED_LABEL = branding.verifiedLabel;
       }
     }
 
@@ -304,18 +325,42 @@
       messages.scrollTop = messages.scrollHeight;
     }
 
-    function appendMessage(role, text, meta) {
+    function appendMessage(role, text, options) {
+      options = options || {};
       var bubble = el('div', 'fts-cw-msg ' + role);
       if (role === 'assistant') {
         var body = el('div', 'fts-cw-md');
         body.innerHTML = renderMarkdown(text);
         bubble.appendChild(body);
-      } else {
+      } else if (role === 'error') {
         bubble.textContent = text;
+      } else {
+        var userText = el('div', 'fts-cw-text');
+        userText.textContent = text;
+        bubble.appendChild(userText);
       }
-      if (meta) {
-        bubble.appendChild(el('span', 'fts-cw-meta', meta));
+
+      if (role !== 'error') {
+        var footer = el('div', 'fts-cw-footer');
+        var showVerified = role === 'assistant' && options.verified !== false
+          && (options.verifiedLabel || VERIFIED_LABEL);
+        if (showVerified) {
+          var label = options.verifiedLabel || VERIFIED_LABEL;
+          var verified = el('div', 'fts-cw-verified');
+          verified.innerHTML =
+            '<span class="fts-cw-verified-icon" aria-hidden="true">' +
+            '<svg viewBox="0 0 16 16" width="14" height="14" focusable="false">' +
+            '<circle cx="8" cy="8" r="8" fill="currentColor"/>' +
+            '<path d="M4.6 8.2l2.1 2.1 4.7-4.7" fill="none" stroke="#fff" stroke-width="1.8" ' +
+            'stroke-linecap="round" stroke-linejoin="round"/>' +
+            '</svg></span>' +
+            '<span>' + escapeHtml(label) + '</span>';
+          footer.appendChild(verified);
+        }
+        footer.appendChild(el('span', 'fts-cw-time', formatTime()));
+        bubble.appendChild(footer);
       }
+
       messages.appendChild(bubble);
       scrollBottom();
       return bubble;
@@ -337,7 +382,7 @@
     }
 
     if (!messages.childElementCount) {
-      appendMessage('assistant', WELCOME);
+      appendMessage('assistant', WELCOME, { verified: false });
     }
 
     launcher.addEventListener('click', function () {
@@ -402,11 +447,7 @@
           if (result.body && result.body.conversationId) {
             persistConversationId(result.body.conversationId);
           }
-          var meta = '';
-          if (result.body && result.body.provider) {
-            meta = 'via ' + result.body.provider + (result.body.fallbackUsed ? ' (fallback)' : '');
-          }
-          appendMessage('assistant', reply, meta);
+          appendMessage('assistant', reply);
         })
         .catch(function (err) {
           showTyping(false);

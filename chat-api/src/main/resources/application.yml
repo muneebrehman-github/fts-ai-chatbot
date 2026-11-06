@@ -35,10 +35,11 @@ fts:
           # expires-at: 2027-12-31T23:59:59Z   # optional; omit = never expires
           allowed-origins: []
           title: FTS Demo Assistant
-          subtitle: Public embed - Groq to Gemini
-          welcome: Hi - ask me anything. This is the public embed demo.
+          subtitle: Public embed demo
+          welcome: Hi — ask me anything. This is the public embed demo.
           placeholder: Type a message...
           launcher-label: AI assistant
+          verified-label: Verified FTS demo data
           system-prompt: |
             You are the FTS demo website assistant.
             Be concise and friendly. Keep answers short.
@@ -59,6 +60,7 @@ fts:
           placeholder: Ask about AI, products, or pricing…
           launcher-label: Chat with Fast Tech
           primary-color: "#2F4C7A"
+          verified-label: Verified Fast Tech Solutions data
           system-prompt: |
             You are the Fast Tech Solutions website assistant on fast-techsolutions.com.
             Be concise, professional, and friendly. Prefer short answers.
@@ -93,6 +95,7 @@ fts:
           placeholder: e.g. how do I create an order?
           launcher-label: Alfa Pearl assistant
           primary-color: "#2FAE45"
+          verified-label: Verified Alfa Pearl portal guidance
           system-prompt: |
             You are the Alfa Pearl Owner Portal AI assistant for a bottled water plant.
             Be concise, accurate, and action-oriented. Prefer short bullet steps for how-tos.

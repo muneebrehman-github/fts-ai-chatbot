@@ -74,7 +74,8 @@ public class PublicChatService {
                 site.getWelcome(),
                 site.getPlaceholder(),
                 site.getLauncherLabel(),
-                site.getPrimaryColor());
+                site.getPrimaryColor(),
+                site.getVerifiedLabel());
     }
 
     private SiteConfig requireSite(String siteKey, String origin) {

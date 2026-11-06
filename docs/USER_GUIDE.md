@@ -89,10 +89,11 @@ fts:
             - http://localhost:3000       # local frontend during development
           title: Example Assistant
           subtitle: We are here to help
-          welcome: Hi ï¿½ ask about our product.
-          placeholder: Type a messageï¿½
+          welcome: Hi ? ask about our product.
+          placeholder: Type a message?
           launcher-label: Chat with us
           primary-color: "#2fe0c4"
+          verified-label: Verified Example data
           system-prompt: |
             You are the Example.com website assistant.
             Be concise and friendly.
@@ -106,7 +107,7 @@ fts:
 | `enabled` | No | Default `true`. Set `false` to disable without deleting the entry |
 | `expires-at` | No | ISO-8601 instant (e.g. `2027-12-31T23:59:59Z`). After expiry returns 403. Omit = never |
 | `allowed-origins` | Prod: yes | Empty = allow any origin (**dev only**) |
-| Branding fields | No | Title, colors, welcome text, etc. |
+| Branding fields | No | `title`, `welcome`, `placeholder`, `primary-color`, `verified-label`, etc. |
 | `system-prompt` | No | Per-site instructions for the model |
 | Rate limits | No | In-memory, per JVM instance |
 
@@ -190,6 +191,7 @@ Appearance ? Theme File Editor (or a ï¿½Header/Footer scriptsï¿½ plugin): paste 
 | `data-placeholder` | Input placeholder |
 | `data-launcher-label` | Floating button label / aria |
 | `data-primary-color` | Accent color (e.g. `#2fe0c4`) |
+| `data-verified-label` | Badge under assistant replies (omit to hide) |
 | `data-storage-key` | `sessionStorage` key for conversation id |
 
 Server branding from `GET /api/v1/public/config?siteKey=...` wins when available; attributes are fallbacks.
@@ -301,10 +303,11 @@ On authenticated layouts only:
       endpoint: '/api/v1/chat',
       storageKey: 'product-ai-chat-conversation-id',
       title: 'AI Assistant',
-      subtitle: 'Product help ï¿½ tools-aware',
-      welcome: 'Hi ï¿½ ask how to use this portal.',
-      placeholder: 'Ask a questionï¿½',
-      launcherLabel: 'AI assistant'
+      subtitle: 'Product help · tools-aware',
+      welcome: 'Hi ? ask how to use this portal.',
+      placeholder: 'Ask a question?',
+      launcherLabel: 'AI assistant',
+      verifiedLabel: 'Verified portal guidance'
     };
   </script>
   <script th:src="@{/js/portal-chat-widget.js}" defer></script>

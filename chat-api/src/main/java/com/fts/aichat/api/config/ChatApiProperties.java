@@ -201,6 +201,11 @@ public class ChatApiProperties implements LlmProviderSettings {
         private String placeholder = "Type a message…";
         private String launcherLabel = "AI assistant";
         private String primaryColor = "";
+        /**
+         * Footer under assistant replies (e.g. "Verified Fast Tech Solutions data").
+         * Empty = hide the verified badge (timestamp still shown).
+         */
+        private String verifiedLabel = "";
         private int rateLimitPerMinute = 60;
         private int rateLimitPerIpPerMinute = 30;
 
@@ -304,6 +309,14 @@ public class ChatApiProperties implements LlmProviderSettings {
 
         public void setPrimaryColor(String primaryColor) {
             this.primaryColor = primaryColor;
+        }
+
+        public String getVerifiedLabel() {
+            return verifiedLabel;
+        }
+
+        public void setVerifiedLabel(String verifiedLabel) {
+            this.verifiedLabel = verifiedLabel;
         }
 
         public int getRateLimitPerMinute() {

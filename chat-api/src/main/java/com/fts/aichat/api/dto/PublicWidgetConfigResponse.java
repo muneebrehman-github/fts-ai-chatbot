@@ -7,6 +7,7 @@ public record PublicWidgetConfigResponse(
         String welcome,
         String placeholder,
         String launcherLabel,
-        String primaryColor
+        String primaryColor,
+        String verifiedLabel
 ) {
 }
