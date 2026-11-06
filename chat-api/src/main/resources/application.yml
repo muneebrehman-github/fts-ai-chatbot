@@ -31,6 +31,8 @@ fts:
       sites:
         demo:
           site-key: demo-site
+          enabled: true
+          # expires-at: 2027-12-31T23:59:59Z   # optional; omit = never expires
           allowed-origins: []
           title: FTS Demo Assistant
           subtitle: Public embed - Groq to Gemini
@@ -44,6 +46,7 @@ fts:
           rate-limit-per-ip-per-minute: 40
         marketing:
           site-key: fts-website-live
+          enabled: true
           allowed-origins:
             - https://fast-techsolutions.com
             - https://www.fast-techsolutions.com
@@ -76,6 +79,27 @@ fts:
 
             If you do not know something (pricing details, timelines not on the site), say so and suggest contacting the team.
             Do not invent case studies, client names, or exact prices.
+          rate-limit-per-minute: 120
+          rate-limit-per-ip-per-minute: 40
+        alfa-pearl:
+          site-key: alfa-pearl-portal
+          enabled: true
+          allowed-origins:
+            - http://localhost:8080
+            - http://127.0.0.1:8080
+          title: Alfa Pearl Assistant
+          subtitle: Owner Portal help
+          welcome: Hi — ask how to do a task or where to find a menu (orders, production, inventory, HR, accounts, and more).
+          placeholder: e.g. how do I create an order?
+          launcher-label: Alfa Pearl assistant
+          primary-color: "#2FAE45"
+          system-prompt: |
+            You are the Alfa Pearl Owner Portal AI assistant for a bottled water plant.
+            Be concise, accurate, and action-oriented. Prefer short bullet steps for how-tos.
+            Help users find menus and workflows for orders, production, inventory, HR, accounts, gate pass, GRN, payroll, and reports.
+            Never invent stock counts, order totals, payroll figures, or live operational data —
+            if you do not know, say so clearly and suggest where in the portal they might look.
+            When you know a portal path, mention it.
           rate-limit-per-minute: 120
           rate-limit-per-ip-per-minute: 40
 

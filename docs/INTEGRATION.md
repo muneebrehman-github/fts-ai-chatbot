@@ -7,7 +7,7 @@ This guide explains how to embed the reusable chat **backend + floating widget**
 | Item | Value |
 |------|--------|
 | Artifact | `com.fts:fts-ai-chatbot-spring-boot-starter` |
-| Current version | `0.2.0` |
+| Current version | `0.2.1` |
 | Packages URL | `https://maven.pkg.github.com/muneebrehman-github/fts-ai-chatbot` |
 | Chat API | `POST /api/v1/chat` |
 | Widget assets | `/js/portal-chat-widget.js`, `/css/portal-chat-widget.css` |
@@ -16,7 +16,7 @@ This guide explains how to embed the reusable chat **backend + floating widget**
 
 Requirements: **Spring Boot 3.4+**, Spring Security (session + CSRF), Spring Web.
 
-> Need a widget on a non-Spring site? Use the hosted **chat-api** embed instead â€”
+> Need a widget on a non-Spring site? Use the hosted **chat-api** embed instead —
 > see [EMBED.md](EMBED.md). This starter remains the path for authenticated Java portals.
 
 ---
@@ -67,7 +67,7 @@ In the product `pom.xml`:
 <dependency>
   <groupId>com.fts</groupId>
   <artifactId>fts-ai-chatbot-spring-boot-starter</artifactId>
-  <version>0.2.0</version>
+  <version>0.2.1</version>
 </dependency>
 ```
 
@@ -126,9 +126,9 @@ Optional JS override (endpoint + product branding):
     endpoint: '/api/v1/chat',
     storageKey: 'product-ai-chat-conversation-id',
     title: 'AI Assistant',
-    subtitle: 'Product help Â· tools-aware',
-    welcome: 'Hi â€” ask how to use this portal.',
-    placeholder: 'Ask a questionâ€¦',
+    subtitle: 'Product help · tools-aware',
+    welcome: 'Hi — ask how to use this portal.',
+    placeholder: 'Ask a question…',
     launcherLabel: 'AI assistant'
   };
 </script>
@@ -143,7 +143,7 @@ Optional JS override (endpoint + product branding):
 ### React / SPA hosts
 
 Load the same CSS/JS URLs from the Spring app (or copy them). Ensure every chat
-`POST` includes the CSRF header Spring expects (or your SPAâ€™s equivalent).
+`POST` includes the CSRF header Spring expects (or your SPA’s equivalent).
 
 ---
 
@@ -174,7 +174,7 @@ Tools run on the request thread, so the logged-in Spring Security context is ava
 
 ## 6. Richer user context (optional)
 
-Override the default `ChatUserContextFactory` so the model sees your principalâ€™s id / name:
+Override the default `ChatUserContextFactory` so the model sees your principal’s id / name:
 
 ```java
 import com.fts.aichat.ChatUserContext;
@@ -206,7 +206,7 @@ public class AiChatSupportConfig {
 1. Start the app with `GROQ_API_KEY` set
 2. Sign in
 3. Confirm the floating chat button (bottom-right)
-4. Send a message â€” expect JSON shaped like:
+4. Send a message — expect JSON shaped like:
 
 ```json
 {
@@ -227,7 +227,7 @@ public class AiChatSupportConfig {
 | Step | Required |
 |------|----------|
 | GitHub Packages auth or local `mvn install` | Yes |
-| Starter dependency `0.2.0` | Yes |
+| Starter dependency `0.2.1` | Yes |
 | `GROQ_API_KEY` | Yes |
 | CSRF meta tags + widget CSS/JS in layout | Yes |
 | Authenticated session for `/api/v1/chat` | Yes |
@@ -241,18 +241,38 @@ public class AiChatSupportConfig {
 ## Architecture note
 
 Prefer this **starter dependency** in each product (with product-local tools and
-SecurityContext). Do **not** route every productâ€™s chat through Control Center
+SecurityContext). Do **not** route every product’s chat through Control Center
 unless you intentionally want a single shared fleet bot with separate service auth.
 
 ---
 
 ## Publishing a new starter version
 
-1. Bump `<version>` in the parent `pom.xml` (modules inherit it)
-2. Create a GitHub Release (or run the **Publish GitHub Package** workflow)
-3. Bump the dependency version in each consuming product
+1. Bump `<version>` in the parent `pom.xml` (and each module parent reference)
+2. Update version strings in `README.md` / `docs/*`
+3. Create a GitHub Release (or run the **Publish GitHub Package** workflow)
+4. Bump the dependency version in each consuming product
 
 The workflow publishes `fts-ai-chatbot-core` and `fts-ai-chatbot-spring-boot-starter`
 only (`chat-api` is a runnable service, not a Packages library).
+
+### Updating a product to this release
+
+```xml
+<dependency>
+  <groupId>com.fts</groupId>
+  <artifactId>fts-ai-chatbot-spring-boot-starter</artifactId>
+  <version>0.2.1</version>
+</dependency>
+```
+
+Then refresh dependencies (`mvn -U dependency:resolve` or IDE reimport). Widget assets are
+served from the starter JAR at `/js/portal-chat-widget.js` and `/css/portal-chat-widget.css`
+? hard-refresh the browser if an old widget is cached.
+
+### 0.2.1 notes
+
+- Assistant replies render Markdown in the floating widget (headings, bold/italic, lists,
+  code, links, horizontal rules) instead of showing raw `**` / `###` text.
 
 See also the root [README.md](../README.md) and [EMBED.md](EMBED.md).
