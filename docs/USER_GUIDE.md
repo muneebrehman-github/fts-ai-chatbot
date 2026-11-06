@@ -1,15 +1,15 @@
-# FTS AI Chatbot — Integration User Guide
+# FTS AI Chatbot ï¿½ Integration User Guide
 
 Step-by-step guide to add the FTS AI chatbot to a website or a Spring Boot product.
 
 | | Public website embed | Spring Boot product |
 |--|--|--|
-| **Use when** | Marketing site, WordPress, React/Next, Lovable, plain HTML | Authenticated FTS portals (Control Center, WaterFlow, …) |
+| **Use when** | Marketing site, WordPress, React/Next, Lovable, plain HTML | Authenticated FTS portals (Control Center, WaterFlow, ï¿½) |
 | **How it works** | Hosted `chat-api` + script tag | Maven starter inside your app |
 | **Auth** | `siteKey` (+ Origin allowlist) | Logged-in session + CSRF |
 | **Detail docs** | [EMBED.md](EMBED.md) | [INTEGRATION.md](INTEGRATION.md) |
 
-**Version:** `0.2.1` · Primary model: Groq · Fallback: Gemini on HTTP **429**
+**Version:** `0.2.1` ï¿½ Primary model: Groq ï¿½ Fallback: Gemini on HTTP **429**
 
 ---
 
@@ -17,24 +17,24 @@ Step-by-step guide to add the FTS AI chatbot to a website or a Spring Boot produ
 
 ```
 Do you have a Spring Boot app with Spring Security sessions?
-        ¦
-   Yes -+-? Path B — Spring Boot starter (authenticated chat + tools)
-        ¦
-   No  ---? Path A — Public embed (any website)
+        ï¿½
+   Yes -+-? Path B ï¿½ Spring Boot starter (authenticated chat + tools)
+        ï¿½
+   No  ---? Path A ï¿½ Public embed (any website)
 ```
 
 Most marketing / external sites use **Path A**. Internal FTS portals use **Path B**.
 
 ---
 
-## Path A — Integrate on any website
+## Path A ï¿½ Integrate on any website
 
 ### A1. Prerequisites
 
 - A running **chat-api** instance (local, Docker, or VM)
 - `GROQ_API_KEY` on the **server** (never in frontend env)
 - Optional: `GEMINI_API_KEY` for 429 fallback
-- Your site’s public origin, e.g. `https://www.example.com`
+- Your siteï¿½s public origin, e.g. `https://www.example.com`
 
 ### A2. Get chat-api running
 
@@ -50,7 +50,7 @@ java -jar chat-api/target/fts-ai-chat-api-0.2.1.jar
 Default local port: **8088**. Demo page: http://localhost:8088/embed-demo.html (`siteKey`: `demo-site`).
 
 **Docker / VM:** see [CICD_GITHUB_DOCKER_VM.md](CICD_GITHUB_DOCKER_VM.md) and `deploy/docker-compose.yml`.  
-Compose maps host `${HOST_PORT:-8080}` ? container `8080`. Put secrets in the VM `.env`:
+Compose maps host `${HOST_PORT:-8080}` â†’ container `8080`. Put secrets in the VM `.env`:
 
 ```env
 GROQ_API_KEY=...
@@ -81,7 +81,7 @@ fts:
     public:
       sites:
         marketing:
-          site-key: mkt-live-key          # public embed token — rotate if leaked
+          site-key: mkt-live-key          # public embed token ï¿½ rotate if leaked
           enabled: true                   # set false to cut off this project immediately
           expires-at: 2027-12-31T23:59:59Z  # optional ISO-8601; omit = never expires
           allowed-origins:
@@ -89,8 +89,8 @@ fts:
             - http://localhost:3000       # local frontend during development
           title: Example Assistant
           subtitle: We are here to help
-          welcome: Hi — ask about our product.
-          placeholder: Type a message…
+          welcome: Hi ï¿½ ask about our product.
+          placeholder: Type a messageï¿½
           launcher-label: Chat with us
           primary-color: "#2fe0c4"
           system-prompt: |
@@ -178,7 +178,7 @@ Or set config before the script loads:
 
 #### WordPress
 
-Appearance ? Theme File Editor (or a “Header/Footer scripts” plugin): paste the HTML snippet in the footer so it loads on every page. Ensure your WordPress origin is in `allowed-origins`.
+Appearance ? Theme File Editor (or a ï¿½Header/Footer scriptsï¿½ plugin): paste the HTML snippet in the footer so it loads on every page. Ensure your WordPress origin is in `allowed-origins`.
 
 #### Optional `data-*` overrides
 
@@ -212,7 +212,7 @@ Server branding from `GET /api/v1/public/config?siteKey=...` wins when available
 
 ---
 
-## Path B — Integrate in a Spring Boot product
+## Path B ï¿½ Integrate in a Spring Boot product
 
 ### B1. Prerequisites
 
@@ -301,9 +301,9 @@ On authenticated layouts only:
       endpoint: '/api/v1/chat',
       storageKey: 'product-ai-chat-conversation-id',
       title: 'AI Assistant',
-      subtitle: 'Product help · tools-aware',
-      welcome: 'Hi — ask how to use this portal.',
-      placeholder: 'Ask a question…',
+      subtitle: 'Product help ï¿½ tools-aware',
+      welcome: 'Hi ï¿½ ask how to use this portal.',
+      placeholder: 'Ask a questionï¿½',
       launcherLabel: 'AI assistant'
     };
   </script>
@@ -317,7 +317,7 @@ Security:
 - Keep `POST /api/v1/chat` **authenticated**
 - Keep CSRF enabled (widget reads the meta tags)
 
-### B6. Optional — product tools
+### B6. Optional ï¿½ product tools
 
 ```java
 import com.fts.aichat.FtsAiChatTools;
@@ -336,16 +336,16 @@ public class MyProductTools implements FtsAiChatTools {
 
 Tools run on the request thread, so `SecurityContextHolder` is available for RBAC.
 
-### B7. Optional — richer user context
+### B7. Optional ï¿½ richer user context
 
-Provide a `ChatUserContextFactory` bean so the model sees your principal’s id / name / authorities. Full example: [INTEGRATION.md](INTEGRATION.md#6-richer-user-context-optional).
+Provide a `ChatUserContextFactory` bean so the model sees your principalï¿½s id / name / authorities. Full example: [INTEGRATION.md](INTEGRATION.md#6-richer-user-context-optional).
 
 ### B8. Verify Path B
 
 1. Start the app with `GROQ_API_KEY`
 2. Sign in
-3. Open an authenticated page — floating button bottom-right
-4. Send a message — expect `POST /api/v1/chat` JSON with `reply`, `conversationId`, `provider`
+3. Open an authenticated page ï¿½ floating button bottom-right
+4. Send a message ï¿½ expect `POST /api/v1/chat` JSON with `reply`, `conversationId`, `provider`
 
 ---
 
@@ -382,7 +382,7 @@ Provide a `ChatUserContextFactory` bean so the model sees your principal’s id / 
 - [ ] chat-api deployed and `/health` OK
 - [ ] Site entry with `site-key` + production `allowed-origins` (+ optional `enabled` / `expires-at`)
 - [ ] Snippet on the page (`widget.css` + `widget.js`)
-- [ ] Keys only on server — not in frontend env
+- [ ] Keys only on server ï¿½ not in frontend env
 - [ ] Test message returns a reply
 
 ### Spring Boot product
