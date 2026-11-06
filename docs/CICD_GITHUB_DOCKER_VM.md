@@ -54,7 +54,7 @@ services:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-prod}
       # ...
     ports:
-      - "${SERVER_PORT:-8080}:8080"
+      - "${HOST_PORT:-8080}:8080"
 ```
 
 ### VM

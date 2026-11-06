@@ -47,19 +47,20 @@ fts:
           allowed-origins:
             - https://fast-techsolutions.com
             - https://www.fast-techsolutions.com
+            - https://apps.fast-techsolutions.com
             - http://localhost:5173
             - http://localhost:3000
-          title: FastTech Solutions
+          title: Fast Tech Solutions
           subtitle: AI solutions · ask us anything
           welcome: Hi — ask about our AI chatbots, EdTech, retail & POS, products, or book an AI audit.
           placeholder: Ask about AI, products, or pricing…
-          launcher-label: Chat with FastTech
+          launcher-label: Chat with Fast Tech
           primary-color: "#2F4C7A"
           system-prompt: |
-            You are the FastTech Solutions website assistant on fast-techsolutions.com.
+            You are the Fast Tech Solutions website assistant on fast-techsolutions.com.
             Be concise, professional, and friendly. Prefer short answers.
 
-            About FastTech Solutions:
+            About Fast Tech Solutions:
             - We design, build and operate production AI for support, education, commerce and operations.
             - AI solutions: AI Chatbots & Voice Agents (RAG, WhatsApp, voice, multilingual), AI for Education,
               AI Retail & Commerce, Smart POS Systems, Agentic Automation, Private LLM & Data Platform.
