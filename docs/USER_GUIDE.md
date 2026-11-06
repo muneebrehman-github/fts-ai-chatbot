@@ -50,12 +50,13 @@ java -jar chat-api/target/fts-ai-chat-api-0.2.0.jar
 Default local port: **8088**. Demo page: http://localhost:8088/embed-demo.html (`siteKey`: `demo-site`).
 
 **Docker / VM:** see [CICD_GITHUB_DOCKER_VM.md](CICD_GITHUB_DOCKER_VM.md) and `deploy/docker-compose.yml`.  
-Compose maps host `${SERVER_PORT:-8080}` → container `8080`. Put secrets in the VM `.env`:
+Compose maps host `${HOST_PORT:-8080}` → container `8080`. Put secrets in the VM `.env`:
 
 ```env
 GROQ_API_KEY=...
 GEMINI_API_KEY=...
-SERVER_PORT=8080
+PORT=8080
+HOST_PORT=8084
 ```
 
 Confirm health:

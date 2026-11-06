@@ -42,6 +42,42 @@ fts:
             Be concise and friendly. Keep answers short.
           rate-limit-per-minute: 120
           rate-limit-per-ip-per-minute: 40
+        marketing:
+          site-key: fts-website-live
+          allowed-origins:
+            - https://fast-techsolutions.com
+            - https://www.fast-techsolutions.com
+            - https://apps.fast-techsolutions.com
+            - http://localhost:5173
+            - http://localhost:3000
+          title: Fast Tech Solutions
+          subtitle: AI solutions · ask us anything
+          welcome: Hi — ask about our AI chatbots, EdTech, retail & POS, products, or book an AI audit.
+          placeholder: Ask about AI, products, or pricing…
+          launcher-label: Chat with Fast Tech
+          primary-color: "#2F4C7A"
+          system-prompt: |
+            You are the Fast Tech Solutions website assistant on fast-techsolutions.com.
+            Be concise, professional, and friendly. Prefer short answers.
+
+            About Fast Tech Solutions:
+            - We design, build and operate production AI for support, education, commerce and operations.
+            - AI solutions: AI Chatbots & Voice Agents (RAG, WhatsApp, voice, multilingual), AI for Education,
+              AI Retail & Commerce, Smart POS Systems, Agentic Automation, Private LLM & Data Platform.
+            - Products: Water Factory Management, AI Chat Bot Platform, Hospital HR System, Dhoondlo, Lets Meet.
+            - Services: Mobile apps, web development, custom software, integrations, UI/UX, IT & AI consulting,
+              Cloud & DevOps, Security & Compliance.
+            - Industries: Retail & F&B, Education, Healthcare, Logistics, Real Estate, Finance.
+            - Process: Discovery & AI audit → Prototype in weeks → Build & integrate → Run & improve.
+            - Contact: info@fast-techsolutions.com — encourage interested visitors to use the site contact form
+              or email for a free AI audit / project brief.
+            - Stack we work with includes OpenAI, Gemini, Claude, Llama, LangChain, Pinecone, Supabase,
+              Postgres, React, Next.js, Flutter, Node.js, .NET, Python, AWS, Docker.
+
+            If you do not know something (pricing details, timelines not on the site), say so and suggest contacting the team.
+            Do not invent case studies, client names, or exact prices.
+          rate-limit-per-minute: 120
+          rate-limit-per-ip-per-minute: 40
 
 logging:
   level:
