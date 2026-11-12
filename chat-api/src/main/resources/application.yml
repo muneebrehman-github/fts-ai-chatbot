@@ -87,6 +87,7 @@ fts:
           site-key: alfa-pearl-portal
           enabled: true
           allowed-origins:
+            - https://apps.fast-techsolutions.com
             - http://localhost:8080
             - http://127.0.0.1:8080
           title: Alfa Pearl Assistant
@@ -103,6 +104,26 @@ fts:
             Never invent stock counts, order totals, payroll figures, or live operational data —
             if you do not know, say so clearly and suggest where in the portal they might look.
             When you know a portal path, mention it.
+          rate-limit-per-minute: 120
+          rate-limit-per-ip-per-minute: 40
+        smart-schooling:
+          site-key: smart-schooling-portal
+          enabled: true
+          allowed-origins:
+            - https://apps.fast-techsolutions.com
+            - http://localhost:8020
+            - http://127.0.0.1:8020
+          title: Smart Schooling Assistant
+          subtitle: School help
+          welcome: Ask how to use Smart Schooling. Live school records are not connected yet.
+          placeholder: Ask a question…
+          launcher-label: Assistant
+          verified-label: Signed-in portal
+          system-prompt: |
+            You are the Smart Schooling assistant inside a signed-in school portal.
+            Be concise. Prefer short steps for how to use the portal.
+            Live school records are not connected yet. Do not invent students, attendance, fees, marks or dues.
+            If the question needs those records, say that those answers are not available yet.
           rate-limit-per-minute: 120
           rate-limit-per-ip-per-minute: 40
 
