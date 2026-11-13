@@ -8,9 +8,13 @@ services:
     image: ${DOCKERHUB_USERNAME:-muneeb123}/fts-ai-chat-api:latest
     container_name: fts-ai-chat-api
     restart: unless-stopped
+    # Light demo API on a shared tiny VM.
+    mem_limit: ${APP_MEM_LIMIT:-448m}
+    cpus: ${APP_CPUS:-0.5}
     env_file:
       - .env
     environment:
+      JAVA_TOOL_OPTIONS: ${JAVA_TOOL_OPTIONS:--XX:MaxRAMPercentage=70 -XX:+ExitOnOutOfMemoryError}
       # Inside listen port. Force SERVER_PORT=PORT so Spring Boot does not
       # pick up host publish port from env_file (SERVER_PORT → server.port).
       PORT: ${PORT:-8080}
